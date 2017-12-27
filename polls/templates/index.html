@@ -1,30 +1,17 @@
-<!DOCTYPE html>
-<html>
-<!-- ... -->
-<div class="col-sm-6 col-sm-offset-3">
+{% extends 'base.html' %}
 
-    <div class="page-header">
-      <h1>Too Doo <small>a django application example</small></h1>
-    </div>
-
-    <ul class="list-group">
-
-        {% for task in tasks %}
-            <li class="list-group-item task-item">
-                  <div class="col-xs-1">
-                      {% if task.done %}
-                          <span class="fa fa-check-square-o"></span>
-                    {% else %}
-                          <span class="fa fa-square-o"></span>
-                    {% endif %}
-
-                  </div>
-                <div class="col-xs-11">{{ task.name }}</div>
-            </li>        
-        {% endfor %}        
-    </ul>
-
-</div>
-
-</body>
-</html>
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+	{% for task in tasks %}
+		<p>
+		{% if task.done %}
+			<input type="checkbox" id="" checked>
+		{% else %}
+			<input type="checkbox" id="">
+		{% endif %}
+		<input style='width:95%' type="text" id="" value={{ task }} disabled>
+		</p>
+    {% endfor %}
+</form>
+{% endblock %}
