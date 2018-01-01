@@ -8,14 +8,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from .forms import PostForm
 
 from .models import Task
 
 def index(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
     tasks = Task.objects.all()
-
+    form = PostForm()
     return render(request, "index.html", {
-            'tasks': tasks
+            'tasks': tasks,
+            'form': form
         })
 
 @login_required
