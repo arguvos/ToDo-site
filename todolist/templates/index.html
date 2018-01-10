@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body onload="btnDisplayNone()">
+	<h2>Welcome, {{ user.username }}!</h2>
+	<h1>New task</h1>
+	<form method="POST" class="post-form">{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="save btn btn-default">Save</button>
+	</form>
+	<form method="post">
+		{% csrf_token %}
+		{% for task in tasks %}
+			<p>
+			{% if task.done %}
+				<input type="checkbox" id="" checked>
+			{% else %}
+				<input type="checkbox" id="">
+			{% endif %}
+			<input style='width:95%' type="text" id="" value={{ task }} onchange="showBtn({{task.pk}})">
+
+			</p>
+
+		{% endfor %}
+	</form>
+</body>
+
+<script type="text/javascript">
+	function btnDisplayNone(){
+		mas = document.getElementsByClassName("hiddenBtn")
+		for(i=0; i<mas.length; i++)
+		{
+			mas[i].style.display = "none"
+		}
+	}
+
+	function showBtn(id){
+		document.getElementById(id).style.display='block';
+	}
+</script>
+
+{% endblock %}
