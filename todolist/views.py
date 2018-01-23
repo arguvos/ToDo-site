@@ -9,8 +9,9 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import PostForm
-
+from todolist import forms
 from .models import Task
+from django.shortcuts import render, get_object_or_404
 
 def index(request):
     if request.method == "POST":
@@ -43,6 +44,14 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
+
+def edit(request, pk):
+    form = PostForm(request.POST)        
+    tasks = Task.objects.all(pk)
+    form = PostForm(request.POST, instance=pk)
+    form.save()
+    return render(request, 'home.html')
+
 def edit(request, pk, field_pk):
     post = get_object(Post, pk=pk)
 
@@ -58,3 +67,8 @@ def edit(request, pk, field_pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'edit.html', {'form': form})
+
+def delete(request, pk):
+    todofield = get_object_or_404(Task, pk=pk)
+    todofield.delete()
+    return render(request, 'home.html')

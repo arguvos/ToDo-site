@@ -19,9 +19,14 @@
 				<input type="checkbox" id="">
 			{% endif %}
 
-			<input style='width:95%' type="text" id="" value="{{ task }}" onchange="showBtn({{task.pk}})">
-
+			<input style='width:95%' type="text" value="{{ task }}" onInput="showBtn({{task.pk}})" onChange="saveChange({{task.pk}})">
+			<button type="submit" id="{{task.pk}}" class="hiddenBtn" href="">Don't Save change!</button>
+			
 			</p>
+
+			<a href="{% url 'delete' pk=task.pk %}">Delete</a>
+
+
 
 		{% endfor %}
 	</form>
@@ -37,7 +42,11 @@
 	}
 
 	function showBtn(id){
-		document.getElementById(id).style.display='block';
+		document.getElementById(id).style.display='block'
+	}
+
+	function saveChange(id){
+		btnDisplayNone()		
 	}
 </script>
 
