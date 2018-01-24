@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-
+from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
@@ -13,6 +14,7 @@ from todolist import forms
 from .models import Task
 from django.shortcuts import render, get_object_or_404
 
+@login_required
 def index(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -28,7 +30,8 @@ def index(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
+
 
 def signup(request):
     if request.method == 'POST':
@@ -44,7 +47,7 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-
+@login_required
 def edit(request, pk):
     form = PostForm(request.POST)        
     tasks = Task.objects.all(pk)
@@ -52,6 +55,7 @@ def edit(request, pk):
     form.save()
     return render(request, 'home.html')
 
+@login_required
 def edit(request, pk, field_pk):
     post = get_object(Post, pk=pk)
 
@@ -68,7 +72,8 @@ def edit(request, pk, field_pk):
         form = PostForm(instance=post)
     return render(request, 'edit.html', {'form': form})
 
+@login_required
 def delete(request, pk):
-    todofield = get_object_or_404(Task, pk=pk)
-    todofield.delete()
-    return render(request, 'home.html')
+	todofield = get_object_or_404(Task, pk=pk)
+	todofield.delete()
+	return HttpResponseRedirect(reverse('index'))

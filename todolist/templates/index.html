@@ -1,53 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style type="text/css">
+#id_name {
+	width: 99.6%;
+}
+#id_submit{
+	width: 100%;
+}
+#id_delete{
+	width: 5%;
+}
+</style>
 
-<body onload="btnDisplayNone()">
-	<h2>Welcome, {{ user.username }}!</h2>
+<body>
 	<h1>New task</h1>
 	<form method="POST" class="post-form">{% csrf_token %}
 		{{ form.as_p }}
-		<button type="submit" class="save btn btn-default">Save</button>
+		<button type="submit" id="id_submit">Save</button>
 	</form>
+	
+	<hr>
+	
 	<form method="post">
 		{% csrf_token %}
 		{% for task in tasks %}
 			<p>
 			{% if task.done %}
-				<input type="checkbox" id="" checked>
+				<input type="checkbox" checked>
 			{% else %}
-				<input type="checkbox" id="">
+				<input type="checkbox" >
 			{% endif %}
 
-			<input style='width:95%' type="text" value="{{ task }}" onInput="showBtn({{task.pk}})" onChange="saveChange({{task.pk}})">
-			<button type="submit" id="{{task.pk}}" class="hiddenBtn" href="">Don't Save change!</button>
-			
+			<input style='width:90%' type="text" value="{{ task }}" onChange="return location.href = '{% url 'delete' pk=task.pk %}'">
+			<a href="{% url 'delete' pk=task.pk %}" id="id_delete">Delete</a>
 			</p>
-
-			<a href="{% url 'delete' pk=task.pk %}">Delete</a>
-
-
 
 		{% endfor %}
 	</form>
 </body>
-
-<script type="text/javascript">
-	function btnDisplayNone(){
-		mas = document.getElementsByClassName("hiddenBtn")
-		for(i=0; i<mas.length; i++)
-		{
-			mas[i].style.display = "none"
-		}
-	}
-
-	function showBtn(id){
-		document.getElementById(id).style.display='block'
-	}
-
-	function saveChange(id){
-		btnDisplayNone()		
-	}
-</script>
-
 {% endblock %}
