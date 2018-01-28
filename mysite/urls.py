@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^(?P<pk>[-_\w]+)/edit/$', views.edit, name='edit'),
     url(r'^(?P<pk>\d+)/delete/$', views.delete, name='delete'),
+    url(r'^(?P<pk>\d+)/chenge_checked/$', views.chenge_checked, name='chenge_checked'),
 ]

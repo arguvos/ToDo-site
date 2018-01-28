@@ -77,3 +77,14 @@ def delete(request, pk):
 	todofield = get_object_or_404(Task, pk=pk)
 	todofield.delete()
 	return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def chenge_checked(request, pk):
+    tasks = Task.objects.get(pk=pk)
+    state = True if tasks.done==False else False
+    tasks.done = state
+    tasks.save()
+    #todofield = get_object_or_404(Task, pk=pk)
+    
+    #todofield.update(done=state)
+    return HttpResponseRedirect(reverse('index'))

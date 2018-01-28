@@ -27,9 +27,9 @@
 		{% for task in tasks %}
 			<p>
 			{% if task.done %}
-				<input type="checkbox" checked>
+				<input type="checkbox" checked onChange="return location.href = '{% url 'chenge_checked' pk=task.pk %}'">
 			{% else %}
-				<input type="checkbox" >
+				<input type="checkbox" onChange="return location.href = '{% url 'chenge_checked' pk=task.pk %}'">
 			{% endif %}
 
 			<input style='width:90%' type="text" value="{{ task }}" onChange="return location.href = '{% url 'delete' pk=task.pk %}'">
