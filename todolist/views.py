@@ -18,10 +18,11 @@ from django.shortcuts import render, get_object_or_404
 def index(request):
     if request.method == "POST":
         form = PostForm(request.POST)
-        if form.is_valid():
+        if form.is_valid():            
             post = form.save(commit=False)
+            post.user = request.user
             post.save()
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(user=request.user)
     form = PostForm()
     return render(request, "index.html", {
             'tasks': tasks,
@@ -31,7 +32,6 @@ def index(request):
 @login_required
 def home(request):
     return render(request, 'index.html')
-
 
 def signup(request):
     if request.method == 'POST':
